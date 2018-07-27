@@ -29,4 +29,11 @@ class CreateThreatsTest extends TestCase
         $thread = factory('App\Thread')->make();
         $this->post('/threads', $thread->toArray());
     }
+
+    public function testGuestsMayNotSeeTheCreateThreadPage()
+    {
+        $this->withExceptionHandling()
+            ->get('/threads/create')
+            ->assertRedirect('/login');
+    }
 }

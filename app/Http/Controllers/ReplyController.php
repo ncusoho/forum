@@ -45,6 +45,7 @@ class ReplyController extends Controller
             'body' => request('body'),
             'user_id' => auth()->id(),
         ]);
+        return redirect(route('threads.show', ['thread' => $thread]));
     }
 
     /**
