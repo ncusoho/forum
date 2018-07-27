@@ -15,7 +15,7 @@ class CreateThreatsTest extends TestCase
     {
         $user = factory('App\User')->create();
         $this->actingAs($user);
-        $thread = factory('App\Thread')->make(['user_id' => $user->id]);
+        $thread = factory('App\Thread')->create(['user_id' => $user->id]);
         $this->post('/threads', $thread->toArray());
 
         $this->get($thread->path())
@@ -25,15 +25,13 @@ class CreateThreatsTest extends TestCase
 
     public function testGuestsMayNotCreateThreads()
     {
-        $this->expectException('Illuminate\Auth\AuthenticationException');
-        $thread = factory('App\Thread')->make();
-        $this->post('/threads', $thread->toArray());
-    }
+        $this->withExceptionHandling();
 
-    public function testGuestsMayNotSeeTheCreateThreadPage()
-    {
-        $this->withExceptionHandling()
-            ->get('/threads/create')
+        $this->post('/threads')
+            ->assertRedirect('/login');
+
+
+        $this->get('/threads/create')
             ->assertRedirect('/login');
     }
 }

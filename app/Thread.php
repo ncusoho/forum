@@ -10,12 +10,17 @@ class Thread extends Model
 
     public function path()
     {
-        return '/threads/' . $this->id;
+        return "/threads/{$this->channel->slug}/{$this->id}";
     }
 
     public function creator()
     {
         return $this->belongsTo('App\User', 'user_id');
+    }
+
+    public function channel()
+    {
+        return $this->belongsTo('App\Channel', 'channel_id');
     }
 
     public function replies()
