@@ -13,8 +13,19 @@ class Thread extends Model
         return '/threads/' . $this->id;
     }
 
+    public function creator()
+    {
+        return $this->belongsTo('App\User', 'user_id');
+    }
+
     public function replies()
     {
         return $this->hasMany(Reply::class);
     }
+
+    public function addReply($reply)
+    {
+        $this->replies()->create($reply);
+    }
+
 }
