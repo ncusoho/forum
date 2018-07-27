@@ -6,27 +6,33 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ThreadsTest extends TestCase
+class ReadThreadsTest extends TestCase
 {
     use DatabaseMigrations;
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
+
+    protected $thread;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->thread = factory('App\Thread')->create();
+    }
+
     public function testAUserCanViewAllThreads()
     {
-        $thread = factory('App\Thread')->create();
-        $response = $this->get('/threads');
-
-        $response->assertStatus(200);
-        $response->assertSee($thread->title);
+        $this->get('/threads')->assertSee($this->thread->title);
     }
 
     public function testAUserCanReadASingleThread()
     {
-        $thread = factory('App\Thread')->create();
-        $response = $this->get('/threads/' . $thread->id);
-        $response->assertSee($thread->title);
+        $this->get('/threads/' . $this->thread->id)->assertSee($this->thread->title);
+    }
+
+    public function testAUserCanReadAppliesAssociatedWithAThread()
+    {
+        $reply = factory('App\Reply')->create([
+           'thread_id' => $this->thread->id,
+        ]);
+        $this->get('/threads/' . $this->thread->id)->assertSee($reply->body);
     }
 }
