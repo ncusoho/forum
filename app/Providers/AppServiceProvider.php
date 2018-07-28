@@ -16,7 +16,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Carbon::setLocale('zh');
-        View::share('channels', \App\Channel::all());
+        if ($this->app->environment() !== 'testing') {
+            View::share('channels',\App\Channel::all()); //todo
+        }
     }
 
     /**
