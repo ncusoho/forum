@@ -13,6 +13,11 @@ class Thread extends Model
         return "/threads/{$this->channel->slug}/{$this->id}";
     }
 
+    public function scopeFilter($query, $filters)
+    {
+        return $filters->apply($query);
+    }
+
     public function creator()
     {
         return $this->belongsTo('App\User', 'user_id');

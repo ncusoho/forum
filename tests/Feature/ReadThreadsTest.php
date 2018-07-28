@@ -57,6 +57,5 @@ class ReadThreadsTest extends TestCase
         $this->get('/threads?by=Foo')
             ->assertSee($threadByFoo->title)
             ->assertDontSee($threadNotByFoo->title);
-
     }
 }
