@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Channel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -16,9 +17,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Carbon::setLocale('zh');
-        if ($this->app->environment() !== 'testing') {
-            View::share('channels',\App\Channel::all()); //todo
-        }
+        View::composer('*',function ($view){
+            $view->with('channels',Channel::all());
+        });
     }
 
     /**
