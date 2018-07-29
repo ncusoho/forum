@@ -19,6 +19,12 @@ require('bootstrap-sass');
 
 window.Vue = require('vue');
 
+window.events = new Vue();
+
+window.flash = function (message) {
+    window.events.$emit('flash',message);
+};
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the

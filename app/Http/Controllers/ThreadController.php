@@ -62,7 +62,8 @@ class ThreadController extends Controller
             'title' => $request->input('title'),
             'body' => $request->input('body'),
         ]);
-        return redirect($thread->path());
+        return redirect($thread->path())
+            ->with('flash','Your thread has been published!');;
     }
 
     /**
